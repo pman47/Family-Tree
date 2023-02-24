@@ -1,10 +1,12 @@
-Implemented New Features for Folder Structure App.
+Implemented New Features for Family Tree App.
 
--Implemented Search Functionality (Wrote Own function logic without external lbrary)
+-Added Custom Label 1 & Custom Label 2.
 
--Implemented Delete Feature
+-Fixed Print PDF Function.
 
--Implemented Json Export & import Features
+-Added new feature Edit Family to the app.
 
--Basic styling done with main Focus on functionality of the app.
+-Improved Search feature, Export and Import Json functionality.
+
+-Improved UI, added dark mode.
 
