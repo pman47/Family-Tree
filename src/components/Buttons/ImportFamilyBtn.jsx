@@ -1,7 +1,7 @@
 import React, { useState,useRef} from 'react'
 import { Button } from '@mui/material'
 
-import { useTreeState } from '../../contexts';
+import { useTreeState,useSelectedNodeState } from '../../contexts';
 import {style} from './Button';
 
 // export const ImportFamilyBtn = () => {
@@ -57,9 +57,10 @@ import {style} from './Button';
 
 export const ImportFamilyBtn = () => {
   // const [setOpen] = useState(false)
+  const [selectedNode,setSelectedNode] = useSelectedNodeState()
   const [isUploading, setIsUploading] = useState(false)
   const inputRef = useRef(null)
-  const [setData] = useTreeState()
+  const [data,setData] = useTreeState()
 
   // const handleOpen = () => setOpen(true)
   // const handleClose = () => setOpen(false)
@@ -74,6 +75,7 @@ export const ImportFamilyBtn = () => {
 
         // console.log(result)
         setData(result)
+        setSelectedNode(result)
       } catch (error) {
         // console.error('Error parsing JSON:', error)
         alert('Invalid JSON file')
