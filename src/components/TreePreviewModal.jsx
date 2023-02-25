@@ -73,8 +73,8 @@ export const TreePreviewModal = ({open,handleClose}) => {
       const opt = {
         margin:       1,
         image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 1 },
-        jsPDF:        { unit: 'in', format: 'a3', orientation: 'landscape' },
+        html2canvas:  { scale: 2,width:element.scrollWidth },
+        jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' },
        
       }
       html2pdf().set(opt).from(element).save('family-tree.pdf')
