@@ -22,7 +22,7 @@ const style = {
     maxWidth: '60vw',
     color:'black'
   };
-  const but = {
+  const savebutton = {
     position: 'absolute' ,
     bottom: '20%',
     left: '46%',
@@ -73,7 +73,7 @@ export const TreePreviewModal = ({open,handleClose}) => {
       const opt = {
         margin:       1,
         image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2,width:element.scrollWidth },
+        html2canvas:  { scale: 2,width:element.scrollWidth,height:element.scrollHeight },
         jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' },
        
       }
@@ -98,7 +98,7 @@ export const TreePreviewModal = ({open,handleClose}) => {
                 </div>
                 
           </div>
-          <Button onClick={savePdf} style={but} variant="contained" >Save PDF</Button>
+          <Button onClick={savePdf} style={savebutton} variant="contained" >Save PDF</Button>
           </>
         </Modal>
       </Portal>
