@@ -3,7 +3,7 @@ import { useTreeState } from '../../contexts'
 import { FolderNode } from '../FolderNode'
 
 import { Modal } from '@mui/material'
-import { FamilyDetailsForm } from '../FamilyDetailsForm'
+
 
 export const FolderStructure = () => {
 
@@ -28,15 +28,7 @@ export const FolderStructure = () => {
                 </ul>
             )}
 
-            {Object.keys(treeState).length < 1 && (
-                <>
-                    <Modal open={true}  >
-                        <div>
-                        <FamilyDetailsForm from={false} />
-                        </div>
-                    </Modal>
-                </>
-            )}
+           
         </div>
     )
 }
