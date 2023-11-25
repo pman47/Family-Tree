@@ -1,8 +1,8 @@
 import React, { useState, useRef } from "react";
-import { Button } from "@mui/material";
+import { Box, Button, Input, Modal, Typography } from "@mui/material";
 
 import { useTreeState, useSelectedNodeState } from "../../contexts";
-import { style } from "./Button";
+import { modelStyle, style } from "./Button";
 
 const FILE_ID = "FILE_ID";
 
@@ -17,6 +17,8 @@ export const ImportFamilyBtn = () => {
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef(null);
   const [data, setData] = useTreeState();
+  const [isOpen, setIsOpen] = useState(false);
+  const [inputValue, setInputValue] = useState("");
 
   const handleFileUpload = (file) => {
     const fr = new FileReader();
@@ -63,7 +65,7 @@ export const ImportFamilyBtn = () => {
 
   function extractFileIdFromUrl(url) {
     const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)\//);
-    return match ? match[1] : null;
+    return match ? match[1] : url;
   }
 
   const getFileAPIUrl = (fileId) => {
@@ -74,10 +76,11 @@ export const ImportFamilyBtn = () => {
     return BASE_URLS.CONTENT_URL.replace(FILE_ID, fileId);
   };
 
-  const handleImportData = async () => {
-    const url =
-      "https://drive.google.com/file/d/1CMRFRPeIHb9SlTLFfMTTCTzvmgDPWrqe/edit";
+  const handleImportData = async (url) => {
+    url = url?.trim() || "";
+
     const fileId = extractFileIdFromUrl(url);
+    if (!fileId) return;
 
     const metadataUrl = getFileAPIUrl(fileId);
     const contentUrl = getFileContentAPIUrl(fileId);
@@ -105,21 +108,65 @@ export const ImportFamilyBtn = () => {
     }
   };
 
+  const openModel = () => setIsOpen(true);
+  const closeModel = (url) => {
+    setIsOpen(false);
+    setInputValue("");
+    if (typeof url === "string" && url.trim()) {
+      handleImportData(url);
+    }
+  };
+
+  const clearTree = () => setData({});
+
   return (
-    <div onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
-      <input
-        id="upload"
-        ref={inputRef}
-        type="file"
-        style={{ display: "none" }}
-        onChange={handleInputChange}
-      />
-      <Button sx={style} onClick={handleUploadClick} disabled={isLoading}>
-        {isLoading ? "Importing data..." : "Import JSON"}
-      </Button>
-      <Button sx={style} onClick={handleImportData} disabled={isLoading}>
-        {isLoading ? "Importing data..." : "Fetch from G-Drive"}
-      </Button>
-    </div>
+    <>
+      <div onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
+        <input
+          id="upload"
+          ref={inputRef}
+          type="file"
+          style={{ display: "none" }}
+          onChange={handleInputChange}
+        />
+        <Button sx={style} onClick={handleUploadClick} disabled={isLoading}>
+          {isLoading ? "Importing data..." : "Import JSON"}
+        </Button>
+        <Button sx={style} onClick={openModel} disabled={isLoading}>
+          {isLoading ? "Importing data..." : "Fetch from G-Drive"}
+        </Button>
+        <Button sx={style} onClick={clearTree}>
+          Clear Tree
+        </Button>
+      </div>
+      <Modal
+        open={isOpen}
+        onClose={closeModel}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={modelStyle}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Enter drive url or drive file id
+          </Typography>
+          <Input
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder="type here"
+          />
+          <br />
+          <br />
+          <br />
+          <Button
+            onClick={() => {
+              closeModel(inputValue);
+            }}
+            variant={"contained"}
+          >
+            Submit
+          </Button>
+        </Box>
+      </Modal>
+    </>
   );
 };
